@@ -82,7 +82,7 @@ func (h *subEventHandler) OnPublish(sub *centrifuge.Subscription, e centrifuge.P
 func newClient(wsURL, hmacSecretKey string) *centrifuge.Client {
 	c := centrifuge.New(wsURL, centrifuge.DefaultConfig())
 
-	c.SetToken(connToken("forwarder", hmacSecretKey, 0))
+	c.SetToken(connToken("dump1090-forwarder", hmacSecretKey, 0))
 
 	handler := &eventHandler{
 		hmacSecretKey: hmacSecretKey,
@@ -135,7 +135,11 @@ func main() {
 	sub.OnPublish(subEventHandler)
 
 	// Subscribe on private channel.
-	_ = sub.Subscribe()
+	err = sub.Subscribe()
+	if err != nil {
+		fmt.Printf("Error subscribing: %v\n", err)
+		return
+	}
 
 	// Dump190
 	dump1090sbs := viper.GetString("dump1090sbs")
