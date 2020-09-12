@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"strings"
 	"time"
 
 	"github.com/spf13/viper"
@@ -167,7 +168,7 @@ func main() {
 				done <- err
 				return
 			}
-			sbs <- string(msg)
+			sbs <- string(strings.TrimRight(string(msg), "\r\n"))
 		}
 	}(conn)
 
