@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -94,6 +95,10 @@ func newClient(wsURL, hmacSecretKey string) *centrifuge.Client {
 	return c
 }
 
+type SBS struct {
+	Message string
+}
+
 func main() {
 	viper.SetEnvPrefix("forwarder")
 	viper.AutomaticEnv()
@@ -169,7 +174,8 @@ func main() {
 	for {
 		select {
 		case msg := <-sbs:
-			_, err := sub.Publish([]byte(msg))
+			data, _ := json.Marshal(&SBS{Message: msg})
+			_, err := sub.Publish(data)
 			if err != nil {
 				fmt.Printf("Error publishing: %v\n", err)
 			}
