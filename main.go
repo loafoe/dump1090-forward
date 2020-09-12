@@ -169,7 +169,10 @@ func main() {
 	for {
 		select {
 		case msg := <-sbs:
-			sub.Publish([]byte(msg))
+			_, err := sub.Publish([]byte(msg))
+			if err != nil {
+				fmt.Printf("Error publishing: %v\n", err)
+			}
 		case err := <-done:
 			fmt.Printf("Error received: %v\n", err)
 			return
