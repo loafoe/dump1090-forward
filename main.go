@@ -138,7 +138,7 @@ func main() {
 	sub.OnSubscribeSuccess(subEventHandler)
 	sub.OnSubscribeError(subEventHandler)
 	sub.OnUnsubscribe(subEventHandler)
-	sub.OnPublish(subEventHandler)
+	//sub.OnPublish(subEventHandler)
 
 	// Subscribe on private channel.
 	err = sub.Subscribe()
