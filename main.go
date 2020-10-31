@@ -175,10 +175,15 @@ func main() {
 	for {
 		select {
 		case msg := <-sbs:
-			data, _ := json.Marshal(&SBS{Message: msg})
-			_, err := sub.Publish(data)
+			data, err := json.Marshal(&SBS{Message: msg})
+			if err != nil {
+				fmt.Printf("Error parsing: %v\n", err)
+				continue
+			}
+			_, err = sub.Publish(data)
 			if err != nil {
 				fmt.Printf("Error publishing: %v\n", err)
+				return
 			}
 		case err := <-done:
 			fmt.Printf("Error received: %v\n", err)
